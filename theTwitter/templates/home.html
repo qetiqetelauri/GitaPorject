@@ -1,0 +1,25 @@
+ {%extends 'base.html' %}
+
+{%block content%}
+ <h1>Post</h1>
+<ul>
+
+
+{% for post in object_list%}
+    <li class="list-group-item"> <b><a href="{%url 'article_detail' post.pk %}">{{post.title}}</a> </b>
+
+    <a href="{%url 'authorPosts' post.author.id %}">{{post.author.first_name}} {{post.author.last_name}}</a> -
+          {% if user.is_authenticated%}
+             {% if user.id == post.author.id%}
+            <a href="{%url 'update_post' post.pk %}" class="btn btn-warning btn-sm">Update</a>
+        <a href="{%url 'delete_post' post.pk %}" class="btn btn-danger btn-sm">Delete</a>
+          {%endif%}
+        {%endif%}
+
+           <br/>
+    {{post.body | slice:":200" | safe}}</li>
+
+
+{% endfor %}
+</ul>
+{%endblock%}
